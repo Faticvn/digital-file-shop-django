@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>تایید خرید</h2>
+
+<ul>
+  {% for i in items %}
+    <li>{{ i.title }} - {{ i.price }}</li>
+  {% endfor %}
+</ul>
+
+<p>جمع کل: {{ total }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">پرداخت (شبیه‌سازی)</button>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ file.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ file.title }}</h2>
+<p>نوع: {{ file.get_type_display }}</p>
+<p>قیمت: {{ file.price }}</p>
+<p>{{ file.description }}</p>
+
+<form method="post" action="{% url 'orders:cart_add' file.id %}">
+  {% csrf_token %}
+  <button type="submit">افزودن به سبد</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>ثبت فایل جدید (فروشنده)</h2>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <p style="color:#666">نکته: برای جزئیات نوع فایل (کتاب/مقاله/...) در نسخه ساده فاز ۲ فعلاً فقط ذخیره می‌شود.</p>
+
+  <button type="submit">ثبت</button>
+</form>
+{% endblock %}

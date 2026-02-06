@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}فروش فایل دیجیتال{% endblock %}</title>
+</head>
+<body>
+  <nav style="display:flex; gap:12px;">
+    <a href="{% url 'files:list' %}">خانه</a>
+
+  {% if user.is_authenticated and user.role == 'seller' %}
+    <a href="{% url 'files:create' %}">ثبت فایل</a>
+    <a href="{% url 'discounts:create' %}">ساخت کد تخفیف</a>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'orders:my_downloads' %}">دانلودهای من</a>
+    <a href="{% url 'accounts:logout' %}">خروج</a>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">ورود</a>
+    <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
+  {% endif %}
+
+    <a href="{% url 'orders:cart' %}">سبد خرید</a>
+  </nav>
+
+
+  
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

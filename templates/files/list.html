@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}لیست فایل‌ها{% endblock %}
+
+{% block content %}
+<h2>لیست فایل‌ها</h2>
+
+<form method="get" style="display:flex; gap:10px; align-items:center;">
+  <input type="text" name="q" placeholder="جستجو..." value="{{ q }}">
+  <select name="type">
+    <option value="">همه نوع‌ها</option>
+    {% for val, label in types %}
+      <option value="{{ val }}" {% if selected_type == val %}selected{% endif %}>
+        {{ label }}
+      </option>
+    {% endfor %}
+  </select>
+  <button type="submit">اعمال</button>
+</form>
+
+<hr>
+
+<ul>
+  {% for f in files %}
+    <li>
+      <a href="{% url 'files:detail' f.pk %}">
+        {{ f.title }} ({{ f.get_type_display }}) - {{ f.price }}
+      </a>
+    </li>
+  {% empty %}
+    <li>هیچ فایلی یافت نشد.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

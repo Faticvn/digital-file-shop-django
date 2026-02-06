@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>سبد خرید</h2>
+
+<ul>
+  {% for i in items %}
+    <li>{{ i.title }} - {{ i.price }}</li>
+  {% empty %}
+    <li>سبد خرید خالی است.</li>
+  {% endfor %}
+</ul>
+
+<p>جمع کل: {{ total }}</p>
+
+<a href="{% url 'orders:checkout' %}">ادامه برای خرید</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+
+media/
+staticfiles/
+.env
+venv/
+
+.vscode/
+.idea/
+
+.DS_Store
