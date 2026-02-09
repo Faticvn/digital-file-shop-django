@@ -4,13 +4,22 @@
 
 <ul>
   {% for i in items %}
-    <li>{{ i.title }} - {{ i.price }}</li>
+    <li style="margin:8px 0;">
+      {{ i.title }} - {{ i.price }}
+
+      <form method="post" action="{% url 'orders:cart_remove' i.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">حذف</button>
+      </form>
+    </li>
   {% empty %}
     <li>سبد خرید خالی است.</li>
   {% endfor %}
 </ul>
 
-<p>جمع کل: {{ total }}</p>
+<p><b>جمع:</b> {{ total }}</p>
 
-<a href="{% url 'orders:checkout' %}">ادامه برای خرید</a>
+{% if items %}
+  <a href="{% url 'orders:checkout' %}">ادامه و پرداخت</a>
+{% endif %}
 {% endblock %}

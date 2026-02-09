@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>دانلودهای من</h2>
+
+<ul>
+  {% for f in files %}
+    <li>
+      {{ f.title }} ({{ f.get_type_display }})
+      -
+      <a href="{% url 'orders:download' f.id %}">دانلود</a>
+    </li>
+  {% empty %}
+    <li>هنوز خریدی انجام ندادی.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

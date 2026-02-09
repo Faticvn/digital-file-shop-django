@@ -2,31 +2,69 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}فروش فایل دیجیتال{% endblock %}</title>
+
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #f6f6f6; }
+    .nav { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e5e5e5; }
+    .nav a { margin-left: 10px; text-decoration: none; color: #222; }
+    .container { max-width: 900px; margin: 18px auto; background: #fff; padding: 16px; border: 1px solid #e5e5e5; border-radius: 8px; }
+    .muted { color: #666; font-size: 14px; }
+    .msg { padding: 10px 12px; border-radius: 8px; margin: 10px 0; }
+    .msg-success { background: #e9f7ef; border: 1px solid #b7e4c7; }
+    .msg-error { background: #fdecea; border: 1px solid #f5c6cb; }
+    .msg-info { background: #eef5ff; border: 1px solid #cfe2ff; }
+    .badge { display:inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; border: 1px solid #ddd; background:#fafafa; }
+    .badge-ok { background:#e9f7ef; border-color:#b7e4c7; }
+    .badge-no { background:#fdecea; border-color:#f5c6cb; }
+    button { cursor: pointer; }
+  </style>
 </head>
+
 <body>
-  <nav style="display:flex; gap:12px;">
-    <a href="{% url 'files:list' %}">خانه</a>
-
-  {% if user.is_authenticated and user.role == 'seller' %}
-    <a href="{% url 'files:create' %}">ثبت فایل</a>
-    <a href="{% url 'discounts:create' %}">ساخت کد تخفیف</a>
-  {% endif %}
-
-  {% if user.is_authenticated %}
-    <a href="{% url 'orders:my_downloads' %}">دانلودهای من</a>
-    <a href="{% url 'accounts:logout' %}">خروج</a>
-  {% else %}
-    <a href="{% url 'accounts:login' %}">ورود</a>
-    <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
-  {% endif %}
-
+  <div class="nav">
+    <a href="{% url 'files:file_list' %}">خانه</a>
     <a href="{% url 'orders:cart' %}">سبد خرید</a>
-  </nav>
 
+    {% if user.is_authenticated and user.role == 'seller' %}
+      <a href="{% url 'files:file_create' %}">ثبت فایل</a>
+      <a href="{% url 'discounts:create' %}">ساخت کد تخفیف</a>
+    {% endif %}
 
-  
-  <hr>
-  {% block content %}{% endblock %}
+    {% if user.is_authenticated %}
+      <a href="{% url 'orders:my_downloads' %}">دانلودهای من</a>
+      <a href="{% url 'accounts:logout' %}">خروج</a>
+
+      <span class="muted">
+        کاربر: {{ user.username }}
+        {% if user.is_verified %}
+          <span class="badge badge-ok">ایمیل تایید شده</span>
+        {% else %}
+          <span class="badge badge-no">ایمیل تایید نشده</span>
+        {% endif %}
+      </span>
+
+    {% else %}
+      <a href="{% url 'accounts:login' %}">ورود</a>
+      <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
+    {% endif %}
+  </div>
+
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="msg
+          {% if message.tags == 'success' %}msg-success{% endif %}
+          {% if message.tags == 'error' %}msg-error{% endif %}
+          {% if message.tags == 'info' %}msg-info{% endif %}
+        ">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>

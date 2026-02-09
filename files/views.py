@@ -1,72 +1,110 @@
+import logging
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import (
+    ArticleDetailForm,
+    BookDetailForm,
+    DigitalFileForm,
+    ImageDetailForm,
+    MusicDetailForm,
+)
 from .models import DigitalFile
 
-def file_list(request):
-    qs = DigitalFile.objects.filter(is_active=True)
+logger = logging.getLogger("shop")
 
-    file_type = request.GET.get('type')
-    q = request.GET.get('q')
+
+def file_list(request):
+    qs = DigitalFile.objects.active()
+
+    file_type = (request.GET.get("type") or "").strip()
+    q = (request.GET.get("q") or "").strip()
 
     if file_type:
         qs = qs.filter(type=file_type)
 
     if q:
-        qs = qs.filter(Q(titleicontains=q) | Q(descriptionicontains=q))
+        qs = qs.filter(Q(title__icontains=q) | Q(description__icontains=q))
 
-    context = {
-        'files': qs.order_by('-created_at'),
-        'selected_type': file_type or '',
-        'q': q or '',
-        'types': DigitalFile.FileType.choices,
-    }
-    return render(request, 'files/list.html', context)
+    qs = qs.order_by("-id")
+    return render(request, "files/list.html", {"files": qs, "q": q, "type": file_type})
+
 
 def file_detail(request, pk):
-    obj = get_object_or_404(DigitalFile, pk=pk, is_active=True)
-    return render(request, 'files/detail.html', {'file': obj})
+    f = get_object_or_404(DigitalFile.objects.active(), pk=pk)
+    return render(request, "files/detail.html", {"file": f})
 
-
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-from django.shortcuts import redirect
-from .forms import (
-    DigitalFileForm, ArticleDetailForm, BookDetailForm, MusicDetailForm, ImageDetailForm
-)
 
 @login_required
 def file_create(request):
-    if request.user.role != 'seller':
-        return HttpResponseForbidden("فقط فروشنده می‌تواند فایل ثبت کند.")
+    if getattr(request.user, "role", None) != "seller":
+        messages.error(request, "فقط فروشنده می‌تواند فایل ثبت کند.")
+        return redirect("files:file_list")
+
+
+    article_form = ArticleDetailForm(prefix="article")
+    book_form = BookDetailForm(prefix="book")
+    music_form = MusicDetailForm(prefix="music")
+    image_form = ImageDetailForm(prefix="image")
+
+    detail_form = None
 
     if request.method == "POST":
         form = DigitalFileForm(request.POST, request.FILES)
+        selected_type = request.POST.get("type")
 
-        # فرم جزئیات را بر اساس type می‌سازیم
-        detail_type = request.POST.get("type")
-        detail_form = None
-        if detail_type == "article":
-            detail_form = ArticleDetailForm(request.POST)
-        elif detail_type == "book":
-            detail_form = BookDetailForm(request.POST)
-        elif detail_type == "music":
-            detail_form = MusicDetailForm(request.POST)
-        elif detail_type == "image":
-            detail_form = ImageDetailForm(request.POST)
+        if selected_type == "article":
+            article_form = ArticleDetailForm(request.POST, prefix="article")
+            detail_form = article_form
+        elif selected_type == "book":
+            book_form = BookDetailForm(request.POST, prefix="book")
+            detail_form = book_form
+        elif selected_type == "music":
+            music_form = MusicDetailForm(request.POST, prefix="music")
+            detail_form = music_form
+        elif selected_type == "image":
+            image_form = ImageDetailForm(request.POST, prefix="image")
+            detail_form = image_form
 
-        if form.is_valid() and (detail_form is None or detail_form.is_valid()):
-            obj = form.save(commit=False)
-            obj.seller = request.user
-            obj.save()
+        main_ok = form.is_valid()
+        detail_ok = (detail_form.is_valid() if detail_form else False)
 
-            if detail_form:
-                d = detail_form.save(commit=False)
-                d.digital_file = obj
-                d.save()
+        if main_ok and detail_ok:
+            digital_file = form.save(commit=False)
+            digital_file.seller = request.user
+            digital_file.save()
 
-            return redirect("files:detail", pk=obj.pk)
+            detail_obj = detail_form.save(commit=False)
+            detail_obj.digital_file = digital_file
+            detail_obj.save()
+
+            logger.info(
+                "FILE_CREATE seller=%s file_id=%s type=%s title=%s price=%s",
+                request.user.username,
+                digital_file.id,
+                digital_file.type,
+                digital_file.title,
+                digital_file.price,
+            )
+
+            messages.success(request, "فایل ثبت شد.")
+            return redirect("files:file_detail", pk=digital_file.pk)
+
     else:
         form = DigitalFileForm()
-        detail_form = None
 
-    return render(request, "files/create.html", {"form": form, "detail_form": detail_form})
+    return render(
+        request,
+        "files/create.html",
+        {
+            "form": form,
+            "detail_form": detail_form,
+            "article_form": article_form,
+            "book_form": book_form,
+            "music_form": music_form,
+            "image_form": image_form,
+        },
+    )

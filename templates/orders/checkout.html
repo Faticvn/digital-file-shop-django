@@ -10,8 +10,19 @@
 
 <p>جمع کل: {{ total }}</p>
 
+{% if discount_error %}
+  <p style="color:red">{{ discount_error }}</p>
+{% endif %}
+
+{% if discount_amount %}
+  <p>تخفیف: {{ discount_amount }}</p>
+{% endif %}
+
+<p><b>مبلغ نهایی: {{ final_total }}</b></p>
+
 <form method="post">
   {% csrf_token %}
+  {{ form.as_p }}
   <button type="submit">پرداخت (شبیه‌سازی)</button>
 </form>
 {% endblock %}

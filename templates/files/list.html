@@ -1,18 +1,15 @@
 {% extends "base.html" %}
-{% block title %}لیست فایل‌ها{% endblock %}
-
 {% block content %}
 <h2>لیست فایل‌ها</h2>
 
-<form method="get" style="display:flex; gap:10px; align-items:center;">
-  <input type="text" name="q" placeholder="جستجو..." value="{{ q }}">
+<form method="get" style="display:flex;gap:8px;flex-wrap:wrap;">
+  <input name="q" value="{{ q }}" placeholder="جستجو..." />
   <select name="type">
     <option value="">همه نوع‌ها</option>
-    {% for val, label in types %}
-      <option value="{{ val }}" {% if selected_type == val %}selected{% endif %}>
-        {{ label }}
-      </option>
-    {% endfor %}
+    <option value="image" {% if type == "image" %}selected{% endif %}>تصویر</option>
+    <option value="music" {% if type == "music" %}selected{% endif %}>موسیقی</option>
+    <option value="book" {% if type == "book" %}selected{% endif %}>کتاب</option>
+    <option value="article" {% if type == "article" %}selected{% endif %}>مقاله</option>
   </select>
   <button type="submit">اعمال</button>
 </form>
@@ -22,12 +19,19 @@
 <ul>
   {% for f in files %}
     <li>
-      <a href="{% url 'files:detail' f.pk %}">
-        {{ f.title }} ({{ f.get_type_display }}) - {{ f.price }}
-      </a>
+      <a href="{% url 'files:file_detail' f.id %}">{{ f.title }}</a>
+      - {{ f.price }}
+      {% if user.is_authenticated and user.role == "seller" and user.id == f.seller_id %}
+  <span style="color:#666;">(فایل شما)</span>
+{% else %}
+  <form method="post" action="{% url 'orders:cart_add' f.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">افزودن به سبد</button>
+  </form>
+{% endif %}
     </li>
   {% empty %}
-    <li>هیچ فایلی یافت نشد.</li>
+    <li>فایلی یافت نشد.</li>
   {% endfor %}
 </ul>
 {% endblock %}

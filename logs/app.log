@@ -1,0 +1,57 @@
+INFO 2026-02-09 18:44:37,705 shop CART_ADD user=naghavifati0@gmail.com file_id=4
+INFO 2026-02-09 18:44:54,990 shop CART_ADD user=naghavifati0@gmail.com file_id=4
+INFO 2026-02-09 18:47:37,437 shop CART_ADD user=naghavifati0@gmail.com file_id=3
+INFO 2026-02-09 18:47:43,014 shop CART_REMOVE user=naghavifati0@gmail.com file_id=4
+INFO 2026-02-09 18:47:43,785 shop CART_REMOVE user=naghavifati0@gmail.com file_id=3
+INFO 2026-02-09 18:47:49,278 shop CART_ADD user=naghavifati0@gmail.com file_id=2
+INFO 2026-02-09 18:48:00,822 shop CHECKOUT paid buyer=naghavifati0@gmail.com order_id=5 total=200 items=1
+INFO 2026-02-09 18:48:21,108 shop CART_ADD user=naghavifati0@gmail.com file_id=4
+INFO 2026-02-09 18:48:23,722 shop CHECKOUT paid buyer=naghavifati0@gmail.com order_id=6 total=120 items=1
+INFO 2026-02-09 22:00:05,889 shop LOGOUT user=naghavifati0@gmail.com
+INFO 2026-02-09 22:17:23,339 shop SIGNUP user=fatima role=buyer
+INFO 2026-02-09 22:35:58,009 shop LOGOUT user=fatima
+INFO 2026-02-09 22:36:12,673 shop LOGIN success user=fatima
+INFO 2026-02-09 22:45:28,243 shop CART_ADD user=buyer_test file_id=1
+INFO 2026-02-09 22:46:36,122 shop LOGOUT user=fatima
+INFO 2026-02-09 23:26:09,105 shop LOGIN success user=afra
+INFO 2026-02-09 23:26:20,071 shop LOGOUT user=afra
+WARNING 2026-02-09 23:27:15,996 shop LOGIN failed username=amir
+INFO 2026-02-09 23:27:22,087 shop LOGIN success user=fatima
+INFO 2026-02-09 23:27:25,017 shop LOGOUT user=fatima
+INFO 2026-02-09 23:27:33,184 shop LOGIN success user=naghavifati0@gmail.com
+INFO 2026-02-09 23:27:45,445 shop LOGOUT user=naghavifati0@gmail.com
+WARNING 2026-02-09 23:27:51,710 shop LOGIN failed username=saghar
+INFO 2026-02-09 23:28:08,096 shop LOGIN success user=fatima
+INFO 2026-02-09 23:28:14,250 shop LOGOUT user=fatima
+INFO 2026-02-09 23:29:46,825 shop SIGNUP user=javad role=buyer
+INFO 2026-02-09 23:30:01,836 shop LOGOUT user=javad
+INFO 2026-02-09 23:31:02,215 shop LOGIN success user=javad
+INFO 2026-02-09 23:31:06,955 shop LOGOUT user=javad
+INFO 2026-02-09 23:32:19,334 shop SIGNUP user=java2 role=seller
+INFO 2026-02-09 23:34:11,028 shop CART_ADD user=java2 file_id=3
+INFO 2026-02-09 23:39:47,263 shop LOGOUT user=java2
+INFO 2026-02-09 23:47:40,946 shop LOGIN success user=java2
+INFO 2026-02-09 23:56:38,237 shop LOGOUT user=java2
+INFO 2026-02-09 23:56:51,894 shop LOGIN success user=java2
+INFO 2026-02-10 00:01:32,246 shop CART_ADD user=java2 file_id=4
+INFO 2026-02-10 00:01:35,558 shop CHECKOUT paid buyer=java2 order_id=7 total=120 items=1
+INFO 2026-02-10 00:01:58,737 shop LOGOUT user=java2
+INFO 2026-02-10 00:02:10,976 shop LOGIN success user=java2
+INFO 2026-02-10 00:16:37,688 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 00:16:38,416 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 00:21:44,186 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 00:21:44,924 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:09:17,601 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:09:18,316 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:11:11,497 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:11:12,213 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:13:01,534 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:13:02,257 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:13:30,420 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:13:31,271 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:16:30,079 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:16:30,794 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:18:51,793 shop CART_ADD user=testuser file_id=1
+INFO 2026-02-10 01:18:52,519 shop CART_ADD user=testuser file_id=2
+INFO 2026-02-10 01:59:33,534 shop CART_ADD user=buyer_test file_id=1
+INFO 2026-02-10 02:01:13,365 shop LOGOUT user=java2

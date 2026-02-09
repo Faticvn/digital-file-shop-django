@@ -1,20 +1,41 @@
+import logging
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
+
 from .forms import DiscountCodeForm
+
+logger = logging.getLogger("shop")
+
 
 @login_required
 def discount_create(request):
-    if request.user.role != "seller":
-        return HttpResponseForbidden("فقط فروشنده می‌تواند کد تخفیف بسازد.")
+    if getattr(request.user, "role", None) != "seller":
+        messages.error(request, "فقط فروشنده می‌تواند کد تخفیف بسازد.")
+        return redirect("files:file_list")
 
     if request.method == "POST":
         form = DiscountCodeForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
+
+            # seller باید از کاربر لاگین گرفته شود
             obj.seller = request.user
+
             obj.save()
-            return redirect("files:list")
+
+            logger.info(
+                "DISCOUNT_CREATE seller=%s code=%s type=%s value=%s max_uses=%s",
+                request.user.username,
+                obj.code,
+                obj.discount_type,
+                obj.value,
+                obj.max_uses,
+            )
+
+            messages.success(request, "کد تخفیف ساخته شد.")
+            return redirect("discounts:create")
     else:
         form = DiscountCodeForm()
 

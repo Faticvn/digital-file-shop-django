@@ -1,27 +1,53 @@
 from django import forms
 from .models import DigitalFile, ArticleDetail, BookDetail, MusicDetail, ImageDetail
 
+
 class DigitalFileForm(forms.ModelForm):
     class Meta:
         model = DigitalFile
-        fields = ["type", "title", "description", "price", "file", "preview_image", "is_active"]
+        fields = ["title", "description", "type", "price", "file", "is_active"]
+
 
 class ArticleDetailForm(forms.ModelForm):
     class Meta:
         model = ArticleDetail
-        fields = ["keywords", "pages"]
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if "digital_file" in self.fields:
+            self.fields.pop("digital_file")
+
 
 class BookDetailForm(forms.ModelForm):
     class Meta:
         model = BookDetail
-        fields = ["author", "isbn", "pages"]
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "digital_file" in self.fields:
+            self.fields.pop("digital_file")
+
 
 class MusicDetailForm(forms.ModelForm):
     class Meta:
         model = MusicDetail
-        fields = ["artist", "duration_seconds"]
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "digital_file" in self.fields:
+            self.fields.pop("digital_file")
+
 
 class ImageDetailForm(forms.ModelForm):
     class Meta:
         model = ImageDetail
-        fields = ["resolution", "format"]
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "digital_file" in self.fields:
+            self.fields.pop("digital_file")

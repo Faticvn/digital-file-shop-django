@@ -1,0 +1,23 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-02-09T22:41:27.340Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "8",
+    "object_repr": "Order #8 - afra (buyer) - pending",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-02-09T22:42:18.507Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "5",
+    "object_repr": 

@@ -1,14 +1,57 @@
 {% extends "base.html" %}
-{% block title %}{{ file.title }}{% endblock %}
-
 {% block content %}
+
 <h2>{{ file.title }}</h2>
+<p>{{ file.description }}</p>
 <p>نوع: {{ file.get_type_display }}</p>
 <p>قیمت: {{ file.price }}</p>
-<p>{{ file.description }}</p>
 
-<form method="post" action="{% url 'orders:cart_add' file.id %}">
-  {% csrf_token %}
-  <button type="submit">افزودن به سبد</button>
-</form>
+<hr>
+<h3>جزئیات فایل</h3>
+
+{% if file.type == "article" %}
+  {% if file.article_detail %}
+    <p><b>کلمات کلیدی:</b> {{ file.article_detail.keywords }}</p>
+    <p><b>تعداد صفحات:</b> {{ file.article_detail.pages }}</p>
+  {% else %}
+    <p>جزئیات مقاله ثبت نشده است.</p>
+  {% endif %}
+
+{% elif file.type == "book" %}
+  {% if file.book_detail %}
+    <p><b>نویسنده:</b> {{ file.book_detail.author }}</p>
+    <p><b>ISBN:</b> {{ file.book_detail.isbn }}</p>
+    <p><b>تعداد صفحات:</b> {{ file.book_detail.pages }}</p>
+  {% else %}
+    <p>جزئیات کتاب ثبت نشده است.</p>
+  {% endif %}
+
+{% elif file.type == "music" %}
+  {% if file.music_detail %}
+    <p><b>هنرمند:</b> {{ file.music_detail.artist }}</p>
+    <p><b>مدت زمان (ثانیه):</b> {{ file.music_detail.duration_seconds }}</p>
+  {% else %}
+    <p>جزئیات موسیقی ثبت نشده است.</p>
+  {% endif %}
+
+{% elif file.type == "image" %}
+  {% if file.image_detail %}
+    <p><b>رزولوشن:</b> {{ file.image_detail.resolution }}</p>
+    <p><b>فرمت:</b> {{ file.image_detail.format }}</p>
+  {% else %}
+    <p>جزئیات تصویر ثبت نشده است.</p>
+  {% endif %}
+{% endif %}
+
+<hr>
+
+{% if user.is_authenticated and user.role == "seller" and user.id == file.seller_id %}
+  <p style="color:#666;">این فایل متعلق به خود شماست و قابل خرید نیست.</p>
+{% else %}
+  <form method="post" action="{% url 'orders:cart_add' file.id %}">
+    {% csrf_token %}
+    <button type="submit">افزودن به سبد</button>
+  </form>
+{% endif %}
+
 {% endblock %}
